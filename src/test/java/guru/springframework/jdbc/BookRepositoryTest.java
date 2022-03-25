@@ -2,6 +2,8 @@ package guru.springframework.jdbc;
 
 import guru.springframework.jdbc.domain.Book;
 import guru.springframework.jdbc.repositories.BookRepository;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,6 +25,15 @@ public class BookRepositoryTest {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Test
+    void testBookFuture() throws ExecutionException, InterruptedException {
+        Future<Book> bookFuture = bookRepository.queryByTitle("Clean Code");
+
+        Book book = bookFuture.get();
+
+        assertThat(book).isNotNull();
+    }
 
     @Test
     void testBookStream() {
