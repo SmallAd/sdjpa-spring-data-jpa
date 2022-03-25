@@ -2,7 +2,6 @@ package guru.springframework.jdbc;
 
 import guru.springframework.jdbc.dao.AuthorDao;
 import guru.springframework.jdbc.domain.Author;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -134,7 +133,6 @@ public class DaoIntegrationTest {
     }
 
     @Test
-    @Disabled
     void testGetAuthorByName() {
         Author author = authorDao.findAuthorByName("Craig", "Walls");
 
