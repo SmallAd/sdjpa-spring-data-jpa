@@ -2,7 +2,6 @@ package guru.springframework.jdbc;
 
 import guru.springframework.jdbc.domain.Book;
 import guru.springframework.jdbc.repositories.BookRepository;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.assertj.core.api.AssertionsForClassTypes;
@@ -27,6 +26,13 @@ public class BookRepositoryTest {
     private BookRepository bookRepository;
 
     @Test
+    void testBookQueryNamed() {
+        Book book = bookRepository.findBookByTitleWithQueryNamed("Clean Code");
+
+        AssertionsForClassTypes.assertThat(book).isNotNull();
+    }
+
+    @Test
     void testBookQuery() {
         Book book = bookRepository.findBookByTitleWithQuery("Clean Code");
 
@@ -34,7 +40,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    void testBookFuture() throws ExecutionException, InterruptedException {
+    void testBookFuture() throws Exception {
         Future<Book> bookFuture = bookRepository.queryByTitle("Clean Code");
 
         Book book = bookFuture.get();
