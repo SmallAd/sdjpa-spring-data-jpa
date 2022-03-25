@@ -5,7 +5,7 @@ import guru.springframework.jdbc.repositories.BookRepository;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -25,6 +25,13 @@ public class BookRepositoryTest {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Test
+    void testBookQuery() {
+        Book book = bookRepository.findBookByTitleWithQuery("Clean Code");
+
+        AssertionsForClassTypes.assertThat(book).isNotNull();
+    }
 
     @Test
     void testBookFuture() throws ExecutionException, InterruptedException {
