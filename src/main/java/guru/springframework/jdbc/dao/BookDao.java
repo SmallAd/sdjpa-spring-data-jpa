@@ -2,8 +2,11 @@ package guru.springframework.jdbc.dao;
 
 import guru.springframework.jdbc.domain.Book;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface BookDao {
+
+    List<Book> findAllBooks(Pageable pageable);
 
     List<Book> findAllBooks(int size, int offset);
 
