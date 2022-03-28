@@ -5,6 +5,8 @@ import java.util.List;
 
 public interface BookDao {
 
+    List<Book> findAllBooks(int size, int offset);
+
     List<Book> findAllBooks();
 
     Book getById(Long id);

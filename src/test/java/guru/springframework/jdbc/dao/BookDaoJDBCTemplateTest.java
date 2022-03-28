@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ActiveProfiles("local")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ComponentScan(basePackages = {"guru.springframework.jdbc.dao"})
+@ComponentScan(basePackages = "guru.springframework.jdbc.dao")
 class BookDaoJDBCTemplateTest {
 
     @Autowired
@@ -29,6 +29,30 @@ class BookDaoJDBCTemplateTest {
     @BeforeEach
     void setUp() {
         bookDao = new BookDaoJDBCTemplate(jdbcTemplate);
+    }
+
+    @Test
+    void testFindAllBooksPage1() {
+        List<Book> books = bookDao.findAllBooks(10, 0);
+
+        assertThat(books).isNotNull();
+        assertThat(books.size()).isEqualTo(10);
+    }
+
+    @Test
+    void testFindAllBooksPage2() {
+        List<Book> books = bookDao.findAllBooks(10, 10);
+
+        assertThat(books).isNotNull();
+        assertThat(books.size()).isGreaterThan(1);
+    }
+
+    @Test
+    void testFindAllBooksPage10() {
+        List<Book> books = bookDao.findAllBooks(10, 100);
+
+        assertThat(books).isNotNull();
+        assertThat(books.size()).isEqualTo(0);
     }
 
     @Test
@@ -94,8 +118,7 @@ class BookDaoJDBCTemplateTest {
 
         bookDao.deleteBookById(saved.getId());
 
-        assertThrows(EmptyResultDataAccessException.class, () -> {
-            bookDao.getById(saved.getId());
-        });
+        assertThrows(EmptyResultDataAccessException.class, () ->
+                bookDao.getById(saved.getId()));
     }
 }

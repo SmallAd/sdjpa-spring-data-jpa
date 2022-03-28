@@ -47,6 +47,10 @@ import org.springframework.stereotype.Component;
         bookRepository.deleteById(id);
     }
 
+    @Override public List<Book> findAllBooks(int size, int offset) {
+        return null;
+    }
+
     @Override public List<Book> findAllBooks() {
         return null;
     }
