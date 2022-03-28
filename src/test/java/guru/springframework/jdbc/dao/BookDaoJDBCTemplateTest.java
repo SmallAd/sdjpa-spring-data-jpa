@@ -1,6 +1,7 @@
 package guru.springframework.jdbc.dao;
 
 import guru.springframework.jdbc.domain.Book;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,14 @@ class BookDaoJDBCTemplateTest {
     @BeforeEach
     void setUp() {
         bookDao = new BookDaoJDBCTemplate(jdbcTemplate);
+    }
+
+    @Test
+    void findAllBooks() {
+        List<Book> books = bookDao.findAllBooks();
+
+        assertThat(books).isNotNull();
+        assertThat(books.size()).isGreaterThan(5);
     }
 
     @Test
