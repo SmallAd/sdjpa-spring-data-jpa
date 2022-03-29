@@ -23,7 +23,16 @@ public class BookDaoHibernate implements BookDao {
 
     @Override
     public List<Book> findAllBooks(Pageable pageable) {
-        return null;
+        EntityManager em = getEntityManager();
+
+        try {
+            TypedQuery<Book> query = em.createQuery("SELECT b FROM Book b", Book.class)
+                    .setFirstResult(Math.toIntExact(pageable.getOffset()))
+                    .setMaxResults(pageable.getPageSize());
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
