@@ -50,7 +50,7 @@ import org.springframework.stereotype.Component;
     }
 
     @Override public List<Book> findAllBooksSortByTitle(Pageable pageable) {
-        return null;
+        return bookRepository.findAll(pageable).getContent();
     }
 
     @Override public List<Book> findAllBooks(Pageable pageable) {
