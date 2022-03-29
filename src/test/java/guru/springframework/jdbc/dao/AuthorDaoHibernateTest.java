@@ -23,7 +23,7 @@ public class AuthorDaoHibernateTest {
     @Autowired
     private EntityManagerFactory emf;
 
-    private AuthorDaoHibernate authorDao;
+    private AuthorDao authorDao;
 
     @BeforeEach
     void setUp() {

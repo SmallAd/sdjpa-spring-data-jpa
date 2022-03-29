@@ -5,6 +5,7 @@ import guru.springframework.jdbc.repositories.BookRepository;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
@@ -53,15 +54,17 @@ import org.springframework.stereotype.Component;
     }
 
     @Override public List<Book> findAllBooks(Pageable pageable) {
-        return null;
+        return bookRepository.findAll(pageable).getContent();
     }
 
     @Override public List<Book> findAllBooks(int size, int offset) {
-        return null;
+        Pageable pageable = PageRequest.ofSize(size)
+                .withPage(offset/size);
+        return findAllBooks(pageable);
     }
 
     @Override public List<Book> findAllBooks() {
-        return null;
+        return bookRepository.findAll();
     }
 }
 
