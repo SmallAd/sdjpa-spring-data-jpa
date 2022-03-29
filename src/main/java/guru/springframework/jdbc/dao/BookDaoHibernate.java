@@ -2,11 +2,13 @@ package guru.springframework.jdbc.dao;
 
 import guru.springframework.jdbc.domain.Book;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 public class BookDaoHibernate implements BookDao {
 
@@ -18,7 +20,22 @@ public class BookDaoHibernate implements BookDao {
 
     @Override
     public List<Book> findAllBooksSortByTitle(Pageable pageable) {
-        return null;
+        EntityManager em = getEntityManager();
+
+        try {
+            String hql = "SELECT b FROM Book b ORDER BY b.title " +
+                    Optional.ofNullable(pageable.getSort().getOrderFor("title"))
+                            .map(Sort.Order::getDirection)
+                            .map(Sort.Direction::name)
+                            .orElse(Sort.DEFAULT_DIRECTION.name());
+
+            TypedQuery<Book> query = em.createQuery(hql, Book.class)
+                    .setFirstResult(Math.toIntExact(pageable.getOffset()))
+                    .setMaxResults(pageable.getPageSize());
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
