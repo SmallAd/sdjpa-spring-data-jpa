@@ -2,8 +2,10 @@ package guru.springframework.jdbc.dao;
 
 import guru.springframework.jdbc.domain.Author;
 import guru.springframework.jdbc.repositories.AuthorRepository;
+import java.util.List;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,10 +14,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthorDaoImpl implements AuthorDao {
 
+    public static final String AUTHOR_NOT_FOUND = "Author with first name '%s' and last name '%s'  not found";
     private final AuthorRepository authorRepository;
 
     public AuthorDaoImpl(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
+    }
+
+    @Override
+    public List<Author> findAllAuthorsByLastName(String lastName, Pageable pageable) {
+        return null;
     }
 
     @Override
@@ -26,7 +34,7 @@ public class AuthorDaoImpl implements AuthorDao {
     @Override
     public Author findAuthorByName(String firstName, String lastName) {
         return authorRepository.findAuthorByFirstNameAndLastName(firstName, lastName)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException(String.format(AUTHOR_NOT_FOUND, firstName, lastName)));
     }
 
     @Override
