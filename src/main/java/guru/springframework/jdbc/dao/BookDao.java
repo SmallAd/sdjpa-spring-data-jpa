@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface BookDao {
 
+    List<Book> findAllBooksSortByTitle(Pageable pageable);
+
     List<Book> findAllBooks(Pageable pageable);
 
     List<Book> findAllBooks(int size, int offset);

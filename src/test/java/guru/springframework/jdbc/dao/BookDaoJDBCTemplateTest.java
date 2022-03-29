@@ -2,6 +2,7 @@ package guru.springframework.jdbc.dao;
 
 import guru.springframework.jdbc.domain.Book;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -30,6 +32,14 @@ class BookDaoJDBCTemplateTest {
     @BeforeEach
     void setUp() {
         bookDao = new BookDaoJDBCTemplate(jdbcTemplate);
+    }
+
+    @Test
+    void testFindAllBooksPage1_sortByTitle() {
+        List<Book> books = bookDao.findAllBooksSortByTitle(PageRequest.of(0, 10,
+                Sort.by(Sort.Order.desc("title"))));
+        assertThat(books).isNotNull();
+        assertThat(books.size()).isEqualTo(10);
     }
 
     @Test

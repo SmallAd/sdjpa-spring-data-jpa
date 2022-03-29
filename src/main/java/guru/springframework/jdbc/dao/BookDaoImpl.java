@@ -48,6 +48,10 @@ import org.springframework.stereotype.Component;
         bookRepository.deleteById(id);
     }
 
+    @Override public List<Book> findAllBooksSortByTitle(Pageable pageable) {
+        return null;
+    }
+
     @Override public List<Book> findAllBooks(Pageable pageable) {
         return null;
     }
